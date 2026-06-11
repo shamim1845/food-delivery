@@ -1,0 +1,20 @@
+{
+  "name": "food-delivery",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:api": "pnpm --filter api run start:dev",
+    "dev:mobile": "pnpm --filter mobile run start",
+    "dev": "concurrently \"pnpm dev:api\" \"pnpm dev:mobile\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.22.0",
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  }
+}
