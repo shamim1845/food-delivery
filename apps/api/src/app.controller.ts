@@ -6,11 +6,11 @@ import type { HealthCheckResponse } from '@food-delivery/types';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get("health")
+  @Get('health')
   getHealth(): HealthCheckResponse {
     return {
-      status: "ok",
+      status: 'ok',
       timestamp: new Date(),
-    }
+    };
   }
 }
