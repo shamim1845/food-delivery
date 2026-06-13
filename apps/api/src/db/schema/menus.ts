@@ -28,3 +28,8 @@ export const menuItems = pgTable('menu_items', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 });
+
+export type MenuCategory = typeof menuCategories.$inferSelect;
+export type NewMenuCategory = typeof menuCategories.$inferInsert;
+export type MenuItem = typeof menuItems.$inferSelect;
+export type NewMenuItem = typeof menuItems.$inferInsert;
