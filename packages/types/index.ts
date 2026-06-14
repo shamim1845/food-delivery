@@ -1,21 +1,19 @@
-import type { User as dbUser } from "src/db/schema";
-
 export const UserRole = {
   CUSTOMER: "CUSTOMER",
-  RESTAURANT: "RESTAURANT",
+  RESTAURANT_OWNER: "RESTAURANT_OWNER",
   DRIVER: "DRIVER",
   ADMIN: "ADMIN",
 } as const;
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole];
 
-export interface User extends dbUser {
-  //   id: string;
-  //   email: string;
-  //   firstName: string;
-  //   lastName: string;
-  //   role: UserRole;
-  //   createdAt: Date;
+export interface User {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: UserRole;
+  createdAt: Date;
 }
 
 export interface HealthCheckResponse {

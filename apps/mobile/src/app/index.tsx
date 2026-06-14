@@ -1,34 +1,14 @@
-import { View, Text, ActivityIndicator } from 'react-native';
-import React from 'react';
-import { api } from '@/lib/axios';
-import { HealthCheckResponse } from '@food-delivery/types';
-import { useQuery } from '@tanstack/react-query';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAuth } from "@/context/auth-context";
+import { Redirect } from "expo-router";
 
-const HomeScreen = () => {
+export default function Index() {
+  const { user, isLoading } = useAuth();
 
-  const { data: health, isLoading, error } = useQuery<HealthCheckResponse>({
-    queryKey: ['health'],
-    queryFn: () => api.get('/health').then((res) => res.data),
-  })
+  if (isLoading) return null;
 
-  console.log(health);
+  if (!user) {
+    return <Redirect href="/login" />;
+  }
 
-  return (
-    <SafeAreaView>
-      <Text style={{color: 'red'}}>Food Delivery</Text>
-
-      {
-        isLoading ? (
-         <ActivityIndicator color={"#ff6b35"} size={"large"} />
-        ) : error ? (
-          <Text>Error: {error.message}</Text>
-        ) : (
-          <Text>Status: {health?.status}</Text>
-        )
-      }
-    </SafeAreaView>
-  );
-};
-
-export default HomeScreen;
+  return <Redirect href="/login" />;
+}
