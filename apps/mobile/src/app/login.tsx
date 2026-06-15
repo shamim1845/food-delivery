@@ -1,15 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { router } from "expo-router";
-import {
-  ActivityIndicator,
-  Alert,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Alert, Pressable, ScrollView, StyleSheet } from "react-native";
 import { useAuth } from "@/context/auth-context";
+import { ThemedText } from "@/components/themed-text";
+import { ThemedInput } from "@/components/themed-input";
+import { ThemedScreenContainer } from "@/components/ThemedScreenContainer";
+import { ThemedButton } from "@/components/themed-button";
 
 const Login = () => {
   const { login } = useAuth();
@@ -25,7 +21,6 @@ const Login = () => {
 
     try {
       await login(email, password);
-      router.replace("/");
     } catch (error) {
       console.log(error);
       Alert.alert("Error", "Invalid credentials");
@@ -35,74 +30,53 @@ const Login = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome back</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <Pressable
-        style={styles.button}
-        onPress={handleLogin}
-        disabled={isLoading}
+    <ThemedScreenContainer>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
       >
-        {isLoading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Login</Text>
-        )}
-      </Pressable>
+        <ThemedText type="subtitle" style={styles.title}>
+          Welcome back
+        </ThemedText>
+        <ThemedInput
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <ThemedInput
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+        <ThemedButton
+          title="Login"
+          onPress={handleLogin}
+          isLoading={isLoading}
+        />
 
-      <Pressable onPress={() => router.push("/register")}>
-        <Text style={styles.link}>Don't have an account? Register here</Text>
-      </Pressable>
-    </View>
+        <Pressable onPress={() => router.push("/register")}>
+          <ThemedText themeColor="primary" style={styles.link}>
+            Don't have an account? Register here
+          </ThemedText>
+        </Pressable>
+      </ScrollView>
+    </ThemedScreenContainer>
   );
 };
 
 export default Login;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: "center",
     padding: 24,
-    backgroundColor: "#fff",
   },
-  title: { fontSize: 28, fontWeight: "700", marginBottom: 32 },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    padding: 14,
-    marginBottom: 16,
-    fontSize: 16,
-  },
-  button: {
-    backgroundColor: "#FF6835",
-    borderRadius: 8,
-    padding: 16,
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
+  title: { marginBottom: 32 },
   link: {
     textAlign: "center",
-    color: "#FF6835",
   },
 });

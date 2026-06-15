@@ -1,19 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { router } from "expo-router";
-import {
-  ActivityIndicator,
-  Alert,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Alert, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { useAuth } from "@/context/auth-context";
 import { UserRole } from "@food-delivery/types";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ThemedInput } from "@/components/themed-input";
+import { ThemedScreenContainer } from "@/components/ThemedScreenContainer";
+import { ThemedText } from "@/components/themed-text";
+import { ThemedButton } from "@/components/themed-button";
+import { useTheme } from "@/hooks/use-theme";
 
+// User Roles
 const ROLES = [
   {
     label: "Customer",
@@ -30,6 +26,7 @@ const ROLES = [
 ];
 
 const Register = () => {
+  const theme = useTheme();
   const { register } = useAuth();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -46,7 +43,6 @@ const Register = () => {
 
     try {
       await register({ firstName, lastName, email, password, role });
-      router.replace("/");
     } catch (error: any) {
       console.log(error);
       Alert.alert(
@@ -59,31 +55,32 @@ const Register = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <Text style={styles.title}>Create a new account</Text>
-        <TextInput
-          style={styles.input}
+    <ThemedScreenContainer>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
+      >
+        <ThemedText type="subtitle" style={styles.title}>
+          Create account
+        </ThemedText>
+        <ThemedInput
           placeholder="First Name"
           value={firstName}
           onChangeText={setFirstName}
         />
-        <TextInput
-          style={styles.input}
+        <ThemedInput
           placeholder="Last Name"
           value={lastName}
           onChangeText={setLastName}
         />
-        <TextInput
-          style={styles.input}
+        <ThemedInput
           placeholder="Email"
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
           autoCapitalize="none"
         />
-        <TextInput
-          style={styles.input}
+        <ThemedInput
           placeholder="Password"
           value={password}
           onChangeText={setPassword}
@@ -91,70 +88,62 @@ const Register = () => {
         />
 
         {/* Role Selector */}
-        <text style={styles.label}>I am a...</text>
+        <ThemedText type="default" style={styles.label}>
+          I am a...
+        </ThemedText>
         <View style={styles.roleContainer}>
           {ROLES.map((r) => (
             <Pressable
               key={r.value}
               style={[
                 styles.roleButton,
-                role === r.value && styles.roleButtonActive,
+                { borderColor: theme.backgroundSelected },
+                role === r.value && {
+                  backgroundColor: theme.primary,
+                  borderColor: theme.primary,
+                },
               ]}
               onPress={() => setRole(r.value)}
             >
-              <Text
+              <ThemedText
+                type="smallBold"
                 style={[
-                  styles.roleText,
-                  role === r.value && styles.roleTextActive,
+                  { color: theme.textSecondary, textAlign: "center" },
+                  role === r.value && { color: theme.text },
                 ]}
               >
                 {r.label}
-              </Text>
+              </ThemedText>
             </Pressable>
           ))}
         </View>
 
-        <Pressable
-          style={styles.button}
+        <ThemedButton
+          title="Register"
           onPress={handleRegister}
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.buttonText}>Register</Text>
-          )}
-        </Pressable>
+          isLoading={isLoading}
+        />
 
         <Pressable onPress={() => router.back()}>
-          <Text style={styles.link}>Already have an account? Login here</Text>
+          <ThemedText themeColor="primary" style={styles.link}>
+            Already have an account? Login here
+          </ThemedText>
         </Pressable>
       </ScrollView>
-    </SafeAreaView>
+    </ThemedScreenContainer>
   );
 };
 
 export default Register;
 
 const styles = StyleSheet.create({
-  container: {
+  scrollContainer: {
     flexGrow: 1,
     justifyContent: "center",
     padding: 24,
-    backgroundColor: "#fff",
   },
-  title: { fontSize: 28, fontWeight: "700", marginBottom: 32 },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    padding: 14,
-    marginBottom: 16,
-    fontSize: 16,
-  },
+  title: { marginBottom: 32 },
   label: {
-    fontSize: 16,
-    fontWeight: "500",
     marginBottom: 12,
   },
   roleContainer: {
@@ -167,35 +156,10 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#ddd",
     alignItems: "center",
-  },
-  roleButtonActive: {
-    backgroundColor: "#FF6835",
-    borderColor: "#FF6835",
-  },
-  roleText: {
-    fontSize: 13,
-    color: "#666",
-  },
-  roleTextActive: {
-    color: "#fff",
-    fontWeight: "600",
-  },
-  button: {
-    backgroundColor: "#FF6835",
-    borderRadius: 8,
-    padding: 16,
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
+    justifyContent: "center",
   },
   link: {
     textAlign: "center",
-    color: "#FF6835",
   },
 });
