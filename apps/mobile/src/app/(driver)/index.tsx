@@ -2,7 +2,7 @@ import { ThemedScreenContainer } from "@/components/ThemedScreenContainer";
 import { ThemedText } from "@/components/themed-text";
 import { ScrollView, StyleSheet } from "react-native";
 
-const index = () => {
+const DriverHomeScreen = () => {
   return (
     <ThemedScreenContainer>
       <ScrollView
@@ -15,7 +15,7 @@ const index = () => {
   );
 };
 
-export default index;
+export default DriverHomeScreen;
 
 const styles = StyleSheet.create({
   scrollContainer: {

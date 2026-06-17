@@ -74,6 +74,19 @@ export class AuthService {
     };
   }
 
+  async me(id: string): Promise<Partial<schema.User>> {
+    const [user] = await this.db
+      .select()
+      .from(schema.users)
+      .where(eq(schema.users.id, id));
+
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    return this.sanitizedUser(user);
+  }
+
   private sanitizedUser(user: schema.User) {
     const { password, ...safeUser } = user;
     void password;

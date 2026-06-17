@@ -13,6 +13,7 @@ import { RegisterDto } from './dto/register.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { Request } from 'express';
 import { JwtPayload } from '@food-delivery/types';
+import { RolesGuard } from './guards/roles.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -33,7 +34,7 @@ export class AuthController {
   @Get('me')
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
-  me(@Req() req: Request & { user: JwtPayload }) {
-    return req.user;
+  async me(@Req() req: Request & { user: JwtPayload }) {
+    return this.authService.me(req.user.sub);
   }
 }
