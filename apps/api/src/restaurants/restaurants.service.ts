@@ -11,7 +11,7 @@ import { CreateRestaurantDto } from './dto/create-restaurant.dto';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 
 @Injectable()
-export class RestaurantService {
+export class RestaurantsService {
   constructor(
     @Inject('DB')
     private readonly db: NeonHttpDatabase<typeof schema>,
@@ -29,7 +29,14 @@ export class RestaurantService {
 
     const [newRestaurant] = await this.db
       .insert(schema.restaurants)
-      .values({ ...createRestaurantDto, ownerId })
+      .values({
+        name: createRestaurantDto.name,
+        description: createRestaurantDto.description,
+        image_url: createRestaurantDto.imageUrl,
+        address: createRestaurantDto.address,
+        cuisineType: createRestaurantDto.cuisineType,
+        ownerId: ownerId,
+      })
       .returning();
 
     return newRestaurant;
@@ -79,7 +86,6 @@ export class RestaurantService {
       throw new NotFoundException(`Restaurant not found`);
     }
 
-    // Add permission check if you have owner_id in restaurants table
     if (existingRestaurant.ownerId !== ownerId) {
       throw new ForbiddenException('You do not own this restaurant');
     }

@@ -9,7 +9,7 @@ import { eq } from 'drizzle-orm';
 import { NeonHttpDatabase } from 'drizzle-orm/neon-http';
 import * as bcrypt from 'bcrypt';
 import * as schema from '../db/schema';
-import type { AuthResponse, JwtPayload, UserRole } from '@food-delivery/types';
+import type { AuthResponse, JwtPayload } from '@food-delivery/types';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 
@@ -87,6 +87,7 @@ export class AuthService {
     return this.sanitizedUser(user);
   }
 
+  // utility functions
   private sanitizedUser(user: schema.User) {
     const { password, ...safeUser } = user;
     void password;
@@ -97,7 +98,7 @@ export class AuthService {
     const payload: JwtPayload = {
       sub: user.id,
       email: user.email,
-      role: user.role as UserRole,
+      role: user.role,
     };
 
     return this.jwtService.sign(payload);

@@ -19,7 +19,7 @@ export const restaurants = pgTable('restaurants', {
   banner_url: text('banner_url'),
   address: text('address').notNull(),
   cuisineType: text('cuisine_type').notNull(),
-  isOpen: boolean('is_open').default(true).notNull(),
+  isOpen: boolean('is_open').default(false).notNull(),
   rating: numeric('rating', { precision: 3, scale: 2 }).default('0').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
