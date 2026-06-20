@@ -1,20 +1,17 @@
 import { createUploadthing, type FileRouter } from 'uploadthing/express';
-import { Request } from 'express';
-import { JwtPayload } from '@food-delivery/types';
-
-type AuthenticatedRequest = Request & { user: JwtPayload };
+import { AuthRequest } from 'src/auth/utils/authRequest.utils';
 
 const f = createUploadthing();
 
 export const uploadRouter: FileRouter = {
   restaurantImage: f({
     image: {
-      maxFileSize: '4MB',
+      maxFileSize: '16MB',
       maxFileCount: 1,
     },
   })
     .middleware(({ req }) => {
-      const authReq = req as AuthenticatedRequest;
+      const authReq = req as AuthRequest;
 
       return { uploadedBy: authReq?.user?.sub ?? 'unknown' };
     })
@@ -29,12 +26,12 @@ export const uploadRouter: FileRouter = {
 
   menuItemImage: f({
     image: {
-      maxFileSize: '4MB',
+      maxFileSize: '16MB',
       maxFileCount: 1,
     },
   })
     .middleware(({ req }) => {
-      const authReq = req as AuthenticatedRequest;
+      const authReq = req as AuthRequest;
 
       return { uploadedBy: authReq?.user?.sub ?? 'unknown' };
     })

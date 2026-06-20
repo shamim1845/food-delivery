@@ -16,7 +16,7 @@ export type ThemedButtonProps = PressableProps & {
   isLoading?: boolean;
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
-  variant?: "primary" | "secondary" | "outline";
+  variant?: "primary" | "secondary" | "outline" | "success" | "danger";
 };
 
 export function ThemedButton({
@@ -44,6 +44,8 @@ export function ThemedButton({
           borderColor: theme.primary,
           backgroundColor: "transparent",
         },
+        variant === "success" && { backgroundColor: theme.success },
+        variant === "danger" && { backgroundColor: theme.danger },
         pressed && styles.pressed,
         isButtonDisabled && styles.disabled,
         style,

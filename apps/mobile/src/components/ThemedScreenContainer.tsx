@@ -28,18 +28,18 @@ export function ThemedScreenContainer({
 }: ThemedScreenContainerProps) {
   return (
     <ThemedView style={styles.themedView}>
-      <SafeAreaView
-        style={[styles.container, style]}
-        {...safeAreaProps}
-        edges={["bottom", "top"]}
+      <KeyboardAvoidingView
+        style={[styles.keyboardAvoid, keyboardAvoidingStyle]}
+        behavior={keyboardAvoidingBehavior}
       >
-        <KeyboardAvoidingView
-          behavior={keyboardAvoidingBehavior}
-          style={[styles.keyboardAvoid, keyboardAvoidingStyle]}
+        <SafeAreaView
+          style={[styles.container, style]}
+          edges={["top"]}
+          {...safeAreaProps}
         >
           {children}
-        </KeyboardAvoidingView>
-      </SafeAreaView>
+        </SafeAreaView>
+      </KeyboardAvoidingView>
     </ThemedView>
   );
 }
@@ -48,10 +48,12 @@ const styles = StyleSheet.create({
   themedView: {
     flex: 1,
   },
-  container: {
+
+  keyboardAvoid: {
     flex: 1,
   },
-  keyboardAvoid: {
+
+  container: {
     flex: 1,
   },
 });
