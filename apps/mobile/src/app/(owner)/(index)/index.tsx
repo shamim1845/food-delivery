@@ -6,7 +6,7 @@ import { Restaurant } from "@food-delivery/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
-import { ActivityIndicator, ScrollView, StyleSheet } from "react-native";
+import { ActivityIndicator, Image, ScrollView, StyleSheet } from "react-native";
 
 const OwnerHome = () => {
   const router = useRouter();
@@ -56,6 +56,13 @@ const OwnerHome = () => {
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps="handled"
       >
+        {restaurant?.imageUrl && (
+          <Image
+            source={{ uri: restaurant.imageUrl }}
+            style={styles.restaurantImage}
+            resizeMode="cover"
+          />
+        )}
         <ThemedText>{restaurant?.name}</ThemedText>
         <ThemedText>Cuisine: {restaurant?.cuisineType}</ThemedText>
 
@@ -76,5 +83,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 24,
     gap: 20
+  },
+  restaurantImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 16,
+    marginBottom: 8,
   },
 });

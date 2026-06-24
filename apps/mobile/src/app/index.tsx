@@ -16,7 +16,7 @@ export default function Index() {
   }
 
   if (user.role === UserRole.RESTAURANT_OWNER) {
-    return <Redirect href="/(owner)" />;
+    return <Redirect href="/(owner)/(index)" />;
   }
 
   if (user.role === UserRole.DRIVER) {

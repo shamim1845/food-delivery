@@ -1,8 +1,15 @@
 import axios from "axios";
 import { getToken } from "./auth";
 
+const SERVER_URL = process.env.EXPO_PUBLIC_SERVER_URL;
+if (!SERVER_URL) {
+  throw new Error("EXPO_PUBLIC_SERVER_URL is not defined");
+}
+
+const API_URL = `${SERVER_URL}/api`;
+
 export const api = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL,
+  baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
   },

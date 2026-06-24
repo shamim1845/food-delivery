@@ -32,7 +32,7 @@ export class RestaurantsService {
       .values({
         name: createRestaurantDto.name,
         description: createRestaurantDto.description,
-        image_url: createRestaurantDto.imageUrl,
+        imageUrl: createRestaurantDto.imageUrl,
         address: createRestaurantDto.address,
         cuisineType: createRestaurantDto.cuisineType,
         ownerId: ownerId,
