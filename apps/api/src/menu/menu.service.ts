@@ -17,20 +17,30 @@ import { UpdateMenuItemDto } from './dto/update-menu-item.dto';
 export class MenuService {
   constructor(@Inject('DB') private db: NeonHttpDatabase<typeof schema>) {}
 
-  // CATEGORIES
-  async createCategory(ownerId: string, dto: CreateCategoryDto) {
+  private async getRestaurantByOwner(ownerId: string) {
     const [restaurant] = await this.db
       .select()
       .from(schema.restaurants)
       .where(eq(schema.restaurants.ownerId, ownerId));
 
     if (!restaurant) {
-      throw new NotFoundException('Restaurant not found');
+      throw new NotFoundException('Create a restaurant first');
+    }
+
+    return restaurant;
+  }
+
+  // CATEGORIES
+  async createCategory(ownerId: string, dto: CreateCategoryDto) {
+    const restaurant = await this.getRestaurantByOwner(ownerId);
+
+    if (!restaurant) {
+      throw new NotFoundException('Create a restaurant first');
     }
 
     const [category] = await this.db
       .insert(schema.menuCategories)
-      .values({ resturantId: restaurant.id, name: dto.name })
+      .values({ restaurantId: restaurant.id, name: dto.name })
       .returning();
 
     return category;
@@ -40,7 +50,7 @@ export class MenuService {
     const categories = await this.db
       .select()
       .from(schema.menuCategories)
-      .where(eq(schema.menuCategories.resturantId, restaurantId));
+      .where(eq(schema.menuCategories.restaurantId, restaurantId));
     return categories;
   }
 
@@ -58,12 +68,9 @@ export class MenuService {
       throw new NotFoundException('Category not found');
     }
 
-    const [myRestaurant] = await this.db
-      .select()
-      .from(schema.restaurants)
-      .where(eq(schema.restaurants.ownerId, ownerId));
+    const myRestaurant = await this.getRestaurantByOwner(ownerId);
 
-    if (!myRestaurant || myRestaurant?.id !== category.resturantId) {
+    if (!myRestaurant || myRestaurant?.id !== category.restaurantId) {
       throw new NotFoundException(
         'This category does not belong to your restaurant.',
       );
@@ -75,7 +82,7 @@ export class MenuService {
       .where(
         and(
           eq(schema.menuCategories.id, categoryId),
-          eq(schema.menuCategories.resturantId, myRestaurant.id),
+          eq(schema.menuCategories.restaurantId, myRestaurant.id),
         ),
       )
       .returning();
@@ -93,12 +100,9 @@ export class MenuService {
       throw new NotFoundException('Category not found');
     }
 
-    const [myRestaurant] = await this.db
-      .select()
-      .from(schema.restaurants)
-      .where(eq(schema.restaurants.ownerId, ownerId));
+    const myRestaurant = await this.getRestaurantByOwner(ownerId);
 
-    if (!myRestaurant || myRestaurant?.id !== category.resturantId) {
+    if (!myRestaurant || myRestaurant?.id !== category.restaurantId) {
       throw new NotFoundException(
         'This category does not belong to your restaurant.',
       );
@@ -109,7 +113,7 @@ export class MenuService {
       .where(
         and(
           eq(schema.menuCategories.id, categoryId),
-          eq(schema.menuCategories.resturantId, myRestaurant.id),
+          eq(schema.menuCategories.restaurantId, myRestaurant.id),
         ),
       )
       .returning();
@@ -119,10 +123,7 @@ export class MenuService {
 
   // MENU ITEMS
   async createMenuItem(ownerId: string, dto: CreateMenuItemDto) {
-    const [myRestaurant] = await this.db
-      .select()
-      .from(schema.restaurants)
-      .where(eq(schema.restaurants.ownerId, ownerId));
+    const myRestaurant = await this.getRestaurantByOwner(ownerId);
 
     if (!myRestaurant) {
       throw new NotFoundException(
@@ -139,7 +140,7 @@ export class MenuService {
       throw new NotFoundException('Category not found');
     }
 
-    if (category.resturantId !== myRestaurant.id) {
+    if (category.restaurantId !== myRestaurant.id) {
       throw new ForbiddenException(
         'This category does not belong to your restaurant.',
       );
@@ -148,7 +149,7 @@ export class MenuService {
     const [menuItem] = await this.db
       .insert(schema.menuItems)
       .values({
-        resturantId: myRestaurant.id,
+        restaurantId: myRestaurant.id,
         categoryId: dto.categoryId,
         name: dto.name,
         description: dto.description,
@@ -164,7 +165,7 @@ export class MenuService {
     const menuItems = await this.db
       .select()
       .from(schema.menuItems)
-      .where(eq(schema.menuItems.resturantId, restaurantId));
+      .where(eq(schema.menuItems.restaurantId, restaurantId));
     return menuItems;
   }
 
@@ -182,12 +183,9 @@ export class MenuService {
       throw new NotFoundException('Menu item not found');
     }
 
-    const [myRestaurant] = await this.db
-      .select()
-      .from(schema.restaurants)
-      .where(eq(schema.restaurants.ownerId, ownerId));
+    const myRestaurant = await this.getRestaurantByOwner(ownerId);
 
-    if (!myRestaurant || myRestaurant?.id !== menuItem.resturantId) {
+    if (!myRestaurant || myRestaurant?.id !== menuItem.restaurantId) {
       throw new NotFoundException(
         'This menu item does not belong to your restaurant.',
       );
@@ -206,7 +204,7 @@ export class MenuService {
       .where(
         and(
           eq(schema.menuItems.id, menuItemId),
-          eq(schema.menuItems.resturantId, myRestaurant.id),
+          eq(schema.menuItems.restaurantId, myRestaurant.id),
         ),
       )
       .returning();
@@ -224,12 +222,9 @@ export class MenuService {
       throw new NotFoundException('Menu item not found');
     }
 
-    const [myRestaurant] = await this.db
-      .select()
-      .from(schema.restaurants)
-      .where(eq(schema.restaurants.ownerId, ownerId));
+    const myRestaurant = await this.getRestaurantByOwner(ownerId);
 
-    if (!myRestaurant || myRestaurant?.id !== menuItem.resturantId) {
+    if (!myRestaurant || myRestaurant?.id !== menuItem.restaurantId) {
       throw new NotFoundException(
         'This menu item does not belong to your restaurant.',
       );
@@ -240,7 +235,7 @@ export class MenuService {
       .where(
         and(
           eq(schema.menuItems.id, menuItemId),
-          eq(schema.menuItems.resturantId, myRestaurant.id),
+          eq(schema.menuItems.restaurantId, myRestaurant.id),
         ),
       )
       .returning();

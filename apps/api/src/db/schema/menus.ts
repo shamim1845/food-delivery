@@ -4,7 +4,7 @@ import { numeric } from 'drizzle-orm/pg-core';
 
 export const menuCategories = pgTable('menu_categories', {
   id: uuid('id').primaryKey().defaultRandom(),
-  resturantId: uuid('resturant_id')
+  restaurantId: uuid('restaurant_id')
     .notNull()
     .references(() => restaurants.id, { onDelete: 'cascade' }),
   name: text('name').notNull(),
@@ -17,7 +17,7 @@ export const menuItems = pgTable('menu_items', {
   categoryId: uuid('category_id')
     .notNull()
     .references(() => menuCategories.id, { onDelete: 'cascade' }),
-  resturantId: uuid('resturant_id')
+  restaurantId: uuid('restaurant_id')
     .notNull()
     .references(() => restaurants.id, { onDelete: 'cascade' }),
   name: text('name').notNull(),

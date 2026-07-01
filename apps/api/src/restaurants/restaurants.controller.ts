@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -41,8 +42,8 @@ export class RestaurantController {
   }
 
   @Get()
-  findAll() {
-    return this.restaurantsService.findAll();
+  findAll(@Query('search') search?: string) {
+    return this.restaurantsService.findAll(search);
   }
 
   @Get(':id')

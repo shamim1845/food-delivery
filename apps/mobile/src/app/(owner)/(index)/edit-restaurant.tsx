@@ -3,7 +3,7 @@ import { ActivityIndicator, Alert, StyleSheet } from "react-native";
 import { ThemedScreenContainer } from "@/components/ThemedScreenContainer";
 import { ThemedText } from "@/components/themed-text";
 import { useRouter } from "expo-router";
-import { RestaurantForm } from "../components/restaurant-form";
+import { RestaurantForm } from "../_components/restaurant-form";
 import { Restaurant } from "@food-delivery/types";
 import { api } from "@/lib/axios";
 

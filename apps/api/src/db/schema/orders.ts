@@ -26,7 +26,7 @@ export const orders = pgTable('orders', {
   customerId: uuid('customer_id')
     .notNull()
     .references(() => users.id),
-  resturantId: uuid('resturant_id')
+  restaurantId: uuid('restaurant_id')
     .notNull()
     .references(() => restaurants.id),
   driverId: uuid('driver_id').references(() => users.id),
