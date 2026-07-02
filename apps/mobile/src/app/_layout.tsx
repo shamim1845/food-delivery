@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from "@/context/auth-context";
 import { AnimatedSplashOverlay } from "@/components/animated-icon";
 import { UserRole } from "@food-delivery/types";
 import { useTheme } from "@/hooks/use-theme";
+import { StripeProvider } from "@stripe/stripe-react-native";
 
 const queryClient = new QueryClient();
 
@@ -61,10 +62,14 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <AuthProvider>
-          <AnimatedSplashOverlay />
-          <RootNavigator />
-        </AuthProvider>
+        <StripeProvider
+          publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY!}
+        >
+          <AuthProvider>
+            <AnimatedSplashOverlay />
+            <RootNavigator />
+          </AuthProvider>
+        </StripeProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
