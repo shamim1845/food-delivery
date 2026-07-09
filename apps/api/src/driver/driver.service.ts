@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { and, eq } from 'drizzle-orm';
+import { and, eq, ne } from 'drizzle-orm';
 import { NeonHttpDatabase } from 'drizzle-orm/neon-http';
 import * as schema from '../db/schema';
 import { UserRole } from '@food-delivery/types';
@@ -39,7 +39,7 @@ export class DriverService {
     return { isOnline: driver.isOnline };
   }
 
-  async assignDriver(orderId: string) {
+  async assignDriver(orderId: string, excludeDriverId?: string) {
     const [driver] = await this.db
       .select()
       .from(schema.users)
@@ -47,6 +47,7 @@ export class DriverService {
         and(
           eq(schema.users.role, UserRole.DRIVER),
           eq(schema.users.isOnline, true),
+          excludeDriverId ? ne(schema.users.id, excludeDriverId) : undefined,
         ),
       );
 
@@ -85,7 +86,7 @@ export class DriverService {
       .where(eq(schema.orders.id, orderId));
 
     // try to find another online driver
-    await this.assignDriver(orderId);
+    await this.assignDriver(orderId, driverId);
 
     return { message: 'Order declined' };
   }

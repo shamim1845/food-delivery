@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+// import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import {
   ActivityIndicator,
   Alert,
@@ -254,7 +254,7 @@ export default function OrderConfirmationScreen() {
             </Pressable>
           )}
 
-          {showMap && (
+          {/* {showMap && (
             <MapView
               style={styles.map}
               provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
@@ -273,7 +273,7 @@ export default function OrderConfirmationScreen() {
                 <Text style={styles.driverPin}>🛵</Text>
               </Marker>
             </MapView>
-          )}
+          )} */}
 
           {order?.status === "CANCELLED" ? (
             <View style={styles.cancelledBox}>

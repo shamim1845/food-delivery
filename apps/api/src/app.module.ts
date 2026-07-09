@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
+import { CacheModule } from './cache/cache.module';
 import { DbModule } from './db/db.module';
 import { AuthModule } from './auth/auth.module';
 import { RestaurantModule } from './restaurants/restaurants.module';
@@ -16,6 +17,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    CacheModule,
     DbModule,
     AuthModule,
     RestaurantModule,
