@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   ActivityIndicator,
   Modal,
@@ -7,7 +7,7 @@ import {
   Text,
   TextInput,
   View,
-} from "react-native";
+} from 'react-native';
 
 interface StarRatingProps {
   rating: number;
@@ -21,7 +21,7 @@ function StarRating({ rating, onRate, size = 36 }: StarRatingProps) {
       {[1, 2, 3, 4, 5].map((star) => (
         <Pressable key={star} onPress={() => onRate(star)}>
           <Text style={[styles.star, { fontSize: size }]}>
-            {star <= rating ? "★" : "☆"}
+            {star <= rating ? '★' : '☆'}
           </Text>
         </Pressable>
       ))}
@@ -50,7 +50,7 @@ export function RatingModal({
 }: RatingModalProps) {
   const [restaurantRating, setRestaurantRating] = useState(0);
   const [driverRating, setDriverRating] = useState(0);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
 
   const canSubmit = restaurantRating > 0 && (!hasDriver || driverRating > 0);
 
@@ -126,11 +126,11 @@ export function RatingModal({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "flex-end",
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
   },
   sheet: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     padding: 28,
@@ -138,14 +138,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontWeight: "700",
-    textAlign: "center",
+    fontWeight: '700',
+    textAlign: 'center',
     marginBottom: 6,
   },
   subtitle: {
     fontSize: 14,
-    color: "#999",
-    textAlign: "center",
+    color: '#999',
+    textAlign: 'center',
     marginBottom: 24,
   },
   section: {
@@ -153,48 +153,48 @@ const styles = StyleSheet.create({
   },
   sectionLabel: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#333",
+    fontWeight: '600',
+    color: '#333',
     marginBottom: 10,
   },
   stars: {
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 6,
   },
   star: {
-    color: "#FF6B35",
+    color: '#FF6B35',
   },
   input: {
     borderWidth: 1,
-    borderColor: "#eee",
+    borderColor: '#eee',
     borderRadius: 10,
     padding: 12,
     fontSize: 14,
-    color: "#333",
-    textAlignVertical: "top",
+    color: '#333',
+    textAlignVertical: 'top',
     marginBottom: 20,
   },
   submitButton: {
-    backgroundColor: "#FF6B35",
+    backgroundColor: '#FF6B35',
     borderRadius: 12,
     padding: 16,
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 12,
   },
   submitButtonDisabled: {
-    backgroundColor: "#f0c4b0",
+    backgroundColor: '#f0c4b0',
   },
   submitButtonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
-    fontWeight: "700",
+    fontWeight: '700',
   },
   skipButton: {
-    alignItems: "center",
+    alignItems: 'center',
     padding: 8,
   },
   skipText: {
     fontSize: 14,
-    color: "#aaa",
+    color: '#aaa',
   },
 });
